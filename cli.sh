@@ -70,7 +70,7 @@ function select_option() {
             wait
             mysql -e "GRANT ALL ON *.* TO '${username}'@'localhost';" &
             sed -i "s/DB_USERNAME=$adminuser/DB_USERNAME=$username/" /var/www/html/app/.env
-            sed -i "s/DB_PASSWORD=$adminpass/DB_PASSWORD=$password/" /var/www/html/app/.env
+            sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$password/g" /var/www/html/app/.env
             mysql -e "USE XPanel_plus; UPDATE admins SET username = '${username}' where id='1';"
             mysql -e "USE XPanel_plus; UPDATE admins SET password = '${password}' where id='1';"
             ;;
