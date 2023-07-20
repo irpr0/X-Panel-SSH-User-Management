@@ -35,29 +35,29 @@
                                     </thead>
                                     <tbody>
                                     @foreach($data as $val)
-                                    <tr>
-                                        <td>{{$val->username}}<i
+                                        <tr>
+                                            <td>{{$val->username}}<i
                                                     style="color:{{$val->color}}!important;"
                                                     class="ti ti-live-photo"></i></td>
-                                        <td>{{$val->ip}}<br><small>Protocol:SSH</small></td>
-                                        <td class="text-center">
-                                            <ul class="list-inline me-auto mb-0">
-                                                <li class="list-inline-item align-bottom">
-                                                    <a href="online&kill-id={{$val->pid}}"
-                                                       class="btn btn-light-primary">
-                                                        Kill ID
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item align-bottom">
-                                                    <a href="online&kill-user={{$val->username}}"
-                                                       class="btn btn-light-danger">
-                                                        Kill USER
-                                                    </a>
-                                                </li>
+                                            <td>{{$val->ip}}<br><small>Protocol:SSH</small></td>
+                                            <td class="text-center">
+                                                <ul class="list-inline me-auto mb-0">
+                                                    <li class="list-inline-item align-bottom">
+                                                        <a href="{{ route('online.kill.pid', ['pid' => $val->pid]) }}"
+                                                           class="btn btn-light-primary">
+                                                            Kill ID
+                                                        </a>
+                                                    </li>
+                                                    <li class="list-inline-item align-bottom">
+                                                        <a href="{{ route('online.kill.username', ['username' => $val->username]) }}"
+                                                           class="btn btn-light-danger">
+                                                            Kill USER
+                                                        </a>
+                                                    </li>
 
-                                            </ul>
-                                        </td>
-                                    </tr>
+                                                </ul>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                     </tbody>
                                 </table>

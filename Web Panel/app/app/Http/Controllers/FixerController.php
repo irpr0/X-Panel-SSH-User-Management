@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Fixer;
+use App\Models\Settings;
+use App\Models\Traffic;
+use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Process;
@@ -25,9 +28,7 @@ class FixerController extends Controller
 
         }
 
-        $users = DB::table('users')
-            ->where('status', 'active')
-            ->get();
+        $users = Users::where('status', 'active')->get();
         foreach ($users as $us) {
             if (!empty($us->end_date)) {
                 $expiredate = strtotime(date("Y-m-d", strtotime($us->end_date)));
@@ -36,33 +37,28 @@ class FixerController extends Controller
                     Process::run("sudo killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
-                        DB::table('users')
-                            ->where('username', $us->username)
+                        Users::where('username', $us->username)
                             ->update(['status' => 'expired']);
                     }
                 }
             }
         }
 
-        $users = DB::table('users')->get();
+        $users = Users::all();
         foreach ($users as $us) {
-            $traffic = DB::table('traffic')
-                ->where('username', $us->username)
-                ->get();
+            $traffic = Traffic::where('username', $us->username)->get();
             foreach ($traffic as $usernamet)
             {
                 $total=$usernamet->total;
 
                 if ($us->traffic < $total && !empty($us->traffic) && $us->traffic > 0) {
-                    DB::table('users')
-                        ->where('username', $us->username)
+                    Users::where('username', $us->username)
                         ->update(['status' => 'traffic']);
                     $username=$us->username;
                     Process::run("sudo killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
-                        DB::table('users')
-                            ->where('username', $us->username)
+                        Users::where('username', $us->username)
                             ->update(['status' => 'traffic']);
                     }
 
@@ -75,7 +71,7 @@ class FixerController extends Controller
     public function multiuser()
     {
 
-        $setting = DB::table('settings')->get();
+        $setting = Settings::all();
         $multiuser = $setting[0]->multiuser;
 
 
@@ -95,7 +91,7 @@ class FixerController extends Controller
         $onlinecount = array_count_values($onlinelist);
 
         foreach ($onlinelist as $useron) {
-            $users = DB::table('users')->where('username', $useron)->get();
+            $users = Users::where('username', $useron)->get();
             foreach ($users as $row) {
                 $limitation = $row->multiuser;
                 $username = $row->username;
@@ -111,15 +107,13 @@ class FixerController extends Controller
                     if ($act_explode[1] > 0) {
                         $start_inp = date("Y-m-d");
                         $end_inp = date('Y-m-d', strtotime($start_inp . " + $finishdate_one_connect days"));
-                        DB::table('users')
-                            ->where('username', $act_explode[0])
+                        Users::where('username', $act_explode[0])
                             ->update(['start_date' => $start_inp,'end_date' => $end_inp]);
                     }
 
                 }
                 if ($limitation !== "0" && $onlinecount[$username] > $limitation){
-
-                    if ($multiuser == 'on') {
+                    if ($multiuser == 'active') {
                         Process::run("sudo killall -u {$username}");
                     }
                 }
@@ -134,11 +128,9 @@ class FixerController extends Controller
 
     public function cronexp_traffic()
     {
-        $users = DB::table('users')->where('status', 'active')->get();
+        $users = Users::where('status', 'active')->get();
         foreach ($users as $us) {
-            $traffic = DB::table('traffic')
-                ->where('username', $us->username)
-                ->get();
+            $traffic = Traffic::where('username', $us->username)->get();
             foreach ($traffic as $usernamet) {
                 $total = $usernamet->total;
 
@@ -147,8 +139,7 @@ class FixerController extends Controller
                     Process::run("sudo killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
-                        DB::table('users')
-                            ->where('username', $us->username)
+                        Users::where('username', $us->username)
                             ->update(['status' => 'traffic']);
                     }
                 }
@@ -231,9 +222,7 @@ class FixerController extends Controller
             }
             //$newarray= json_encode($newarray);
             foreach ($newarray as $username => $usr) {
-                $traffic = DB::table('traffic')
-                    ->where('username', $username)
-                    ->get();
+                $traffic = Traffic::where('username', $username)->get();
                 $user = $traffic[0];
                 $userdownload = $user->download;
                 $userupload = $user->upload;
@@ -249,10 +238,11 @@ class FixerController extends Controller
                 $lastupload = $userupload + $tx;
                 $lasttotal = $usertotal + $tot;
 
-                $check_traffic = DB::table('traffic')->where('username', $username)->count();
+                $check_traffic = Traffic::where('username', $username)->count();
 
                 if ($check_traffic < 1) {
-                    DB::table('traffic')->insert([
+
+                    Traffic::create([
                         'username' => $username,
                         'download' => $lastdownload,
                         'upload' => $lastupload,
@@ -260,13 +250,12 @@ class FixerController extends Controller
                     ]);
 
                 } else {
-                    DB::table('traffic')
-                        ->where('username', $username)
+                    Traffic::where('username', $username)
                         ->update(['download' => $lastdownload, 'upload' => $lastupload, 'total' => $lasttotal]);
                 }
             }
         }
-        $settings = DB::table('settings')->where('id', '1')->get();
+        $settings = Settings::where('id', '1')->get();
         $multiuser = $settings[0]->multiuser;
 
         $list = Process::run("sudo lsof -i :" . env('PORT_SSH') . " -n | grep -v root | grep ESTABLISHED");
@@ -286,9 +275,7 @@ class FixerController extends Controller
         $onlinecount = array_count_values($onlinelist);
 
         foreach ($onlinelist as $useron) {
-            $users = DB::table('users')
-                ->where('username', $useron)
-                ->get();
+            $users = Users::where('username', $useron)->get();
             foreach ($users as $row) {
                 $limitation = $row->multiuser;
                 $username = $row->username;
@@ -305,8 +292,7 @@ class FixerController extends Controller
                     if ($act_explode[1] > 0) {
                         $start_inp = date("Y-m-d");
                         $end_inp = date('Y-m-d', strtotime($start_inp . " + $finishdate_one_connect days"));
-                        DB::table('users')
-                            ->where('username', $act_explode[0])
+                        Users::where('username', $act_explode[0])
                             ->update(['start_date' => $start_inp,'end_date' => $end_inp]);
                     }
 

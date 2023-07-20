@@ -162,7 +162,6 @@ class UserController extends Controller
                 ]);
 
                 Traffic::create([
-                    'user_id' => $user->id,
                     'username' => $user->username,
                     'download' => '0',
                     'upload' => '0',

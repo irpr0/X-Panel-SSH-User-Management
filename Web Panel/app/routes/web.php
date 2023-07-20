@@ -37,6 +37,8 @@ Route::prefix('cp')->group(function()
     Route::get('/user/edit/{username}',[UserController::class,'edit'])->name('user.edit');
     Route::post('/user/edit',[UserController::class,'update'])->name('user.update');
     Route::get('/online',[OnlineController::class,'index'])->name('online');
+    Route::get('/online/id/{pid}',[OnlineController::class,'kill_pid'])->name('online.kill.pid');
+    Route::get('/online/user/{username}',[OnlineController::class,'kill_user'])->name('online.kill.username');
     Route::get('/checkip',[OnlineController::class,'filtering'])->name('filtering');
     Route::get('/settings',[SettingsController::class,'defualt'])->name('setting');
     Route::get('/settings/{name}',[SettingsController::class,'index'])->name('settings');

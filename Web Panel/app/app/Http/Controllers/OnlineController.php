@@ -23,6 +23,23 @@ class OnlineController extends Controller
             exit(view('access'));
         }
     }
+    public function kill_pid(Request $request,$pid)
+    {
+        if (!is_numeric($pid)) {
+            abort(400, 'Not Valid Username');
+        }
+        Process::run("sudo kill -9 {$pid}");
+        return redirect()->back()->with('success', 'Killed');
+    }
+
+    public function kill_user(Request $request,$username)
+    {
+        if (!is_string($username)) {
+            abort(400, 'Not Valid Username');
+        }
+        Process::run("sudo killall -u {$username}");
+        return redirect()->back()->with('success', 'Killed');
+    }
     public function index()
     {
         $this->check();
