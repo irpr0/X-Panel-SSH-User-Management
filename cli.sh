@@ -85,7 +85,11 @@ function select_option() {
         3)
             echo "Please enter a SSH TLS port:"
             read tlsport
-            bash /var/www/html/app/Libs/sh/stunnel.sh $tlsport $sshport &
+            echo "cert = /etc/stunnel/stunnel.pem
+[openssh]
+accept = $tlsport
+connect = 0.0.0.0:$sshport
+            " > /etc/stunnel/stunnel.conf
             systemctl enable stunnel4
             systemctl restart stunnel4
             mysql -e "USE XPanel_plus; UPDATE settings SET tls_port = '${tlsport}' where id='1';"
