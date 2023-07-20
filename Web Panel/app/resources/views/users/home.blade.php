@@ -206,18 +206,21 @@ Password:{{$user->password}}&nbsp;
                                                                    @if (!empty($finishdate))
                                                                        EndTime:{{$finishdate}}
                                                                    @endif">Copy Config</a>
+                                                                @php
+                                                                $at="@";
+                                                                @endphp
 
                                                                 <a href="javascript:void(0);" class="dropdown-item" style="border:none"
                                                                    data-clipboard="true"
-                                                                   data-clipboard-text="ssh://{{$user->username}}:{{$user->password}}@ {{$_SERVER["SERVER_NAME"]}}:{{env('PORT_SSH')}}/#{{$user->username}}">Link SSH
+                                                                   data-clipboard-text="ssh://{{$user->username}}:{{$user->password}}{{$at}}{{$_SERVER["SERVER_NAME"]}}:{{env('PORT_SSH')}}/#{{$user->username}}">Link SSH
                                                                 </a>
                                                                 <a href="javascript:void(0);" class="dropdown-item" style="border:none"
                                                                    data-clipboard="true"
-                                                                   data-clipboard-text="ssh://{{$user->username}}:{{$user->password}}@ {{$_SERVER["SERVER_NAME"]}}:{{$tls_port}}/#{{$user->username}}">Link SSH TLS
+                                                                   data-clipboard-text="ssh://{{$user->username}}:{{$user->password}}{{$at}}{{$_SERVER["SERVER_NAME"]}}:{{$tls_port}}/#{{$user->username}}">Link SSH TLS
                                                                 </a>
                                                                 <a href="javascript:void(0);" class="qrs dropdown-item"
-                                                                   data-tls="ssh://{{$user->username}}:{{$user->password}}@ {{$_SERVER["SERVER_NAME"]}}:{{$tls_port}}/#{{$user->username}}"
-                                                                   data-id="ssh://{{$user->username}}:{{$user->password}}@ {{$_SERVER["SERVER_NAME"]}}:{{env('PORT_SSH')}}/#{{$user->username}}"
+                                                                   data-tls="ssh://{{$user->username}}:{{$user->password}}{{$at}}{{$_SERVER["SERVER_NAME"]}}:{{$tls_port}}/#{{$user->username}}"
+                                                                   data-id="ssh://{{$user->username}}:{{$user->password}}{{$at}}{{$_SERVER["SERVER_NAME"]}}:{{env('PORT_SSH')}}/#{{$user->username}}"
                                                                    data-bs-toggle="modal"
                                                                    data-bs-target="#qr-modal">
                                                                     QR
