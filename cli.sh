@@ -49,7 +49,8 @@ function show_menu() {
     echo "4. Update XPanel"
     echo "5. Remove XPanel"
     echo "6. Remove All Admin XPanel"
-    echo "7. Exit"
+    echo "7. Change Banner Text"
+    echo "8. Exit"
 }
 
 # Function to select an option
@@ -117,6 +118,13 @@ connect = 0.0.0.0:$sshport
        echo "Removed All Admin"
         ;;
         7)
+        echo "Please enter a Text Banner:"
+        read banner
+cat << EOF > /root/banner.txt
+$banner
+EOF
+            ;;
+        8)
             echo "Exiting the menu."
             exit 0
             ;;
