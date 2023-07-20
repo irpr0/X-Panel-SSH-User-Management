@@ -49,7 +49,7 @@ function show_menu() {
     echo "4. Update XPanel"
     echo "5. Remove XPanel"
     echo "6. Remove All Admin XPanel"
-    echo "7. Remove All Admin XPanel"
+    echo "7. Change Banner Text"
     echo "8. Exit"
 }
 
