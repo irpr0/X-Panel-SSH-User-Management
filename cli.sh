@@ -48,7 +48,8 @@ function show_menu() {
     echo "3. Chnage Port SSH TLS"
     echo "4. Update XPanel"
     echo "5. Remove XPanel"
-    echo "6. Exit"
+    echo "6. Remove All Admin XPanel"
+    echo "7. Exit"
 }
 
 # Function to select an option
@@ -70,7 +71,7 @@ function select_option() {
             wait
             mysql -e "GRANT ALL ON *.* TO '${username}'@'localhost';" &
             sed -i "s/DB_USERNAME=$adminuser/DB_USERNAME=$username/" /var/www/html/app/.env
-            sed -i "s/DB_PASSWORD=$adminpass/DB_PASSWORD=$password/" /var/www/html/app/.env
+            sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$password/g" /var/www/html/app/.env
             mysql -e "USE XPanel_plus; UPDATE admins SET username = '${username}' where id='1';"
             mysql -e "USE XPanel_plus; UPDATE admins SET password = '${password}' where id='1';"
             ;;
@@ -85,7 +86,11 @@ function select_option() {
         3)
             echo "Please enter a SSH TLS port:"
             read tlsport
-            bash /var/www/html/app/Libs/sh/stunnel.sh $tlsport $sshport &
+            echo "cert = /etc/stunnel/stunnel.pem
+[openssh]
+accept = $tlsport
+connect = 0.0.0.0:$sshport
+            " > /etc/stunnel/stunnel.conf
             systemctl enable stunnel4
             systemctl restart stunnel4
             mysql -e "USE XPanel_plus; UPDATE settings SET tls_port = '${tlsport}' where id='1';"
@@ -106,7 +111,12 @@ function select_option() {
         sudo apt-get purge apache2 php8.1 zip unzip net-tools curl mariadb-server php8.1-cli php8.1-fpm php8.1-mysql php8.1-curl php8.1-gd php8.1-mbstring php8.1-xml -y
         fi
         ;;
+        
         6)
+       mysql -e "USE XPanel_plus; TRUNCATE TABLE admins;"
+       echo "Removed All Admin"
+        ;;
+        7)
             echo "Exiting the menu."
             exit 0
             ;;
