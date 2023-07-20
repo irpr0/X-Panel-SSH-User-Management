@@ -48,7 +48,8 @@ function show_menu() {
     echo "3. Chnage Port SSH TLS"
     echo "4. Update XPanel"
     echo "5. Remove XPanel"
-    echo "6. Exit"
+    echo "6. Remove All Admin XPanel"
+    echo "7. Exit"
 }
 
 # Function to select an option
@@ -110,7 +111,12 @@ connect = 0.0.0.0:$sshport
         sudo apt-get purge apache2 php8.1 zip unzip net-tools curl mariadb-server php8.1-cli php8.1-fpm php8.1-mysql php8.1-curl php8.1-gd php8.1-mbstring php8.1-xml -y
         fi
         ;;
+        
         6)
+       mysql -e "USE XPanel_plus; TRUNCATE TABLE admins;"
+       echo "Removed All Admin"
+        ;;
+        7)
             echo "Exiting the menu."
             exit 0
             ;;
