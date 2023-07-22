@@ -21,7 +21,9 @@ use App\Http\Controllers\FixerController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/', function () {
+    return redirect('/login');
+});
 Route::prefix('cp')->group(function()
 {
     Route::get('/dashboard',[DahboardController::class,'index'])->name('dashboard');
