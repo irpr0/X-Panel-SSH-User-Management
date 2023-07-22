@@ -9,6 +9,7 @@ class Api extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'username',
         'token',
         'description',
         'allow_ip',

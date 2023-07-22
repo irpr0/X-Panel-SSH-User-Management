@@ -68,10 +68,11 @@
                                             @php
                                                 $uid++
                                             @endphp
-                                            @if ($user->traffic > "0")
+                                            @if ($user->traffic > 0)
                                                 @if (1024 <= $user->traffic)
                                                     @php
-                                                        $traffic_user = round($user->traffic / 1024,3) . ' GB';
+                                                        $trafficValue = floatval($user->traffic);
+                                                        $traffic_user = round($trafficValue / 1024,3) . ' GB';
                                                     @endphp
                                                 @else
                                                     @php
@@ -85,8 +86,11 @@
                                             @endif
 
                                             @foreach($user->traffics as $traffic)
-                                                @if (1024 < $user->total)
-                                                    @php $total = round($traffic->total / 1024, 3) . ' GB';  @endphp
+                                                @if (1024 <= $traffic->total)
+
+                                                    @php
+                                                        $trafficValue = floatval($traffic->total);
+                                                        $total = round($trafficValue / 1024, 3) . ' GB';  @endphp
                                                 @else
                                                     @php $total = $traffic->total . ' MB'; @endphp
                                                 @endif
@@ -207,7 +211,7 @@ Password:{{$user->password}}&nbsp;
                                                                        EndTime:{{$finishdate}}
                                                                    @endif">Copy Config</a>
                                                                 @php
-                                                                $at="@";
+                                                                    $at="@";
                                                                 @endphp
 
                                                                 <a href="javascript:void(0);" class="dropdown-item" style="border:none"

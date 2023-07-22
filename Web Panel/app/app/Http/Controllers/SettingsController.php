@@ -181,12 +181,23 @@ class SettingsController extends Controller
                         $data = explode(",", $li);
                         $check_traffic =Traffic::where('username', $data[0])->count();
                         if ($check_traffic < 1) {
-                            Traffic::create([
-                                'username' => $data[0],
-                                'download' => $data[1],
-                                'upload' => $data[2],
-                                'total' => $data[3]
-                            ]);
+                            if (!is_numeric($data[0])) {
+                                Traffic::create([
+                                    'username' => $data[0],
+                                    'download' => $data[1],
+                                    'upload' => $data[2],
+                                    'total' => $data[3]
+                                ]);
+                            }
+                            else
+                            {
+                                Traffic::create([
+                                    'username' => $data[1],
+                                    'download' => $data[2],
+                                    'upload' => $data[3],
+                                    'total' => $data[4]
+                                ]);
+                            }
                         }
                     }
 
@@ -204,12 +215,23 @@ class SettingsController extends Controller
                         $data = explode(",", $li);
                         $check_traffic =Traffic::where('username', $data[0])->count();
                         if ($check_traffic < 1) {
-                            Traffic::create([
-                                'username' => $data[0],
-                                'download' => $data[1],
-                                'upload' => $data[2],
-                                'total' => $data[3]
-                            ]);
+                            if (!is_numeric($data[0])) {
+                                Traffic::create([
+                                    'username' => $data[0],
+                                    'download' => $data[1],
+                                    'upload' => $data[2],
+                                    'total' => $data[3]
+                                ]);
+                            }
+                            else
+                            {
+                                Traffic::create([
+                                    'username' => $data[1],
+                                    'download' => $data[2],
+                                    'upload' => $data[3],
+                                    'total' => $data[4]
+                                ]);
+                            }
                         }
                     }
 
@@ -232,6 +254,7 @@ class SettingsController extends Controller
                     ]);
                 }
             }
+
 
         }
         return redirect()->intended(route('settings', ['name' => 'backup']));
