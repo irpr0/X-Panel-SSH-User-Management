@@ -115,6 +115,7 @@ sudo add-apt-repository ppa:ondrej/php -y
 apt-get install apache2 zip unzip net-tools curl mariadb-server -y
 apt-get install php php-cli php-mbstring php-dom php-pdo php-mysql -y
 apt-get install npm -y
+sudo apt-get install coreutils
 wait
 phpv=$(php -v)
 if [[ $phpv == *"8.1"* ]]; then
