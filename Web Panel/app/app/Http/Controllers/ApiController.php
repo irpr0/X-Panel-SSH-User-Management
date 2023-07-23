@@ -112,7 +112,8 @@ class ApiController extends Controller
             ]);
 
             Process::run("sudo adduser --disabled-password --gecos '' --shell /usr/sbin/nologin {$request->username}");
-            Process::run("echo '{$request->username}:{$request->password}' | sudo chpasswd");
+            Process::input($request->password."\n".$request->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
+
             return response()->json(['message' => 'User Created']);
         }
 
@@ -204,7 +205,8 @@ class ApiController extends Controller
                 ]);
             if ($request->activate == "active") {
                 Process::run("sudo adduser --disabled-password --gecos '' --shell /usr/sbin/nologin {$request->username}");
-                Process::run("echo '{$request->username}:{$request->password}' | sudo chpasswd");
+                Process::input($request->password."\n".$request->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
+
             } else {
                 Process::run("sudo killall -u {$request->username}");
                 Process::run("sudo pkill -u {$request->username}");
@@ -214,7 +216,8 @@ class ApiController extends Controller
             }
             if($user->password!=$request->password)
             {
-                Process::run("echo '{$request->username}:{$request->password}' | sudo chpasswd");
+                Process::input($request->password."\n".$request->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
+
             }
             return response()->json(['message' => 'User Updated']);
         }
@@ -235,7 +238,8 @@ class ApiController extends Controller
             Users::where('username', $request->username)->update(['status' => 'active']);
             $user = Users::where('username', $request->username)->get();
             Process::run("sudo adduser --disabled-password --gecos '' --shell /usr/sbin/nologin {$user[0]->username}");
-            Process::run("echo '{$user[0]->username}:{$user[0]->password}' | sudo chpasswd");
+            Process::input($user[0]->password."\n".$user[0]->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
+
             return response()->json(['message' => 'User Activated']);
         }
         else
@@ -301,7 +305,8 @@ class ApiController extends Controller
                 ->update(['status' => 'active', 'end_date' => $newdate]);
             $user = Users::where('username', $request->username)->get();
             Process::run("sudo adduser --disabled-password --gecos '' --shell /usr/sbin/nologin {$user[0]->username}");
-            Process::run("echo '{$user[0]->username}:{$user[0]->password}' | sudo chpasswd");
+            Process::input($user[0]->password."\n".$user[0]->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
+
             if ($request->re_date == 'yes') {
                 Users::where('username', $request->username)
                     ->update(['start_date' => date("Y-m-d")]);

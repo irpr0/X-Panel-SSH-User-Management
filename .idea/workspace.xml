@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d50d8e18-a0fd-450a-835d-0b5aea5e7d6b" name="Changes" comment="Fix Version 3.7.6 (API &amp; Delete user)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/ApiController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/FixerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/FixerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/UserController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,14 +131,7 @@
       <workItem from="1689752035282" duration="25405000" />
       <workItem from="1689881962816" duration="8088000" />
       <workItem from="1690042608127" duration="8271000" />
-      <workItem from="1690128877539" duration="3946000" />
-    </task>
-    <task id="LOCAL-00068" summary="Fix Version 3.4">
-      <created>1688619604631</created>
-      <option name="number" value="00068" />
-      <option name="presentableId" value="LOCAL-00068" />
-      <option name="project" value="LOCAL" />
-      <updated>1688619604631</updated>
+      <workItem from="1690128877539" duration="7538000" />
     </task>
     <task id="LOCAL-00069" summary="Fix Version 3.5">
       <created>1688624202160</created>
@@ -476,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1690133936637</updated>
     </task>
-    <option name="localTasksCounter" value="117" />
+    <task id="LOCAL-00117" summary="Fix Version 3.7.6 (API &amp; Delete user)">
+      <created>1690135065962</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1690135065962</updated>
+    </task>
+    <option name="localTasksCounter" value="118" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

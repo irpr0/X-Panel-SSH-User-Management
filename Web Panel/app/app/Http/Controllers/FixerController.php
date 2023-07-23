@@ -176,97 +176,99 @@ class FixerController extends Controller
             $json = json_decode($lastdata, true);
 
             $newarray = [];
-            foreach ($json as $value) {
-                $TX = round($value["TX"], 0);
-                $RX = round($value["RX"], 0);
-                $name = preg_replace("/\\s+/", "", $value["name"]);
-                if (strpos($name, "sshd") === false) {
-                    $name = "";
-                }
-                if (strpos($name, "root") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "/usr/sbin/dropbear") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "/usr/bin/stunnel4") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "unknown TCP") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "/usr/sbin/apache2") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "[net]") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "[accepted]") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "[rexeced]") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "@notty") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "root:sshd") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "/sbin/sshd") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "[priv]") !== false) {
-                    $name = "";
-                }
-                if (strpos($name, "@pts/1") !== false) {
-                    $name = "";
-                }
-                if ($value["RX"] < 1 && $value["TX"] < 1) {
-                    $name = "";
-                }
-                $name = str_replace("sshd:", "", $name);
-                if (!empty($name)) {
-                    if (isset($newarray[$name])) {
-                        $newarray[$name]["TX"] + $TX;
-                        $newarray[$name]["RX"] + $RX;
-                    } else {
-                        $newarray[$name] = ["RX" => $RX, "TX" => $TX, "Total" => $RX + $TX];
+            if (is_array($json)) {
+                foreach ($json as $value) {
+                    $TX = round($value["TX"], 0);
+                    $RX = round($value["RX"], 0);
+                    $name = preg_replace("/\\s+/", "", $value["name"]);
+                    if (strpos($name, "sshd") === false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "root") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "/usr/sbin/dropbear") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "/usr/bin/stunnel4") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "unknown TCP") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "/usr/sbin/apache2") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "[net]") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "[accepted]") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "[rexeced]") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "@notty") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "root:sshd") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "/sbin/sshd") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "[priv]") !== false) {
+                        $name = "";
+                    }
+                    if (strpos($name, "@pts/1") !== false) {
+                        $name = "";
+                    }
+                    if ($value["RX"] < 1 && $value["TX"] < 1) {
+                        $name = "";
+                    }
+                    $name = str_replace("sshd:", "", $name);
+                    if (!empty($name)) {
+                        if (isset($newarray[$name])) {
+                            $newarray[$name]["TX"] + $TX;
+                            $newarray[$name]["RX"] + $RX;
+                        } else {
+                            $newarray[$name] = ["RX" => $RX, "TX" => $TX, "Total" => $RX + $TX];
+                        }
                     }
                 }
-            }
-            //$newarray= json_encode($newarray);
-            foreach ($newarray as $username => $usr) {
-                $traffic = Traffic::where('username', $username)->get();
-                $user = $traffic[0];
-                $userdownload = $user->download;
-                $userupload = $user->upload;
-                $usertotal = $user->total;
-                $rx = round($usr["RX"]);
-                $rx = ($rx) / 10;
-                $rx = round(($rx / 12) * 100);
-                $tx = round($usr["TX"]);
-                $tx = ($tx) / 10;
-                $tx = round(($tx / 12) * 100);
-                $tot = $rx + $tx;
-                $lastdownload = $userdownload + $rx;
-                $lastupload = $userupload + $tx;
-                $lasttotal = $usertotal + $tot;
+                //$newarray= json_encode($newarray);
+                foreach ($newarray as $username => $usr) {
+                    $traffic = Traffic::where('username', $username)->get();
+                    $user = $traffic[0];
+                    $userdownload = $user->download;
+                    $userupload = $user->upload;
+                    $usertotal = $user->total;
+                    $rx = round($usr["RX"]);
+                    $rx = ($rx) / 10;
+                    $rx = round(($rx / 12) * 100);
+                    $tx = round($usr["TX"]);
+                    $tx = ($tx) / 10;
+                    $tx = round(($tx / 12) * 100);
+                    $tot = $rx + $tx;
+                    $lastdownload = $userdownload + $rx;
+                    $lastupload = $userupload + $tx;
+                    $lasttotal = $usertotal + $tot;
 
-                $check_traffic = Traffic::where('username', $username)->count();
+                    $check_traffic = Traffic::where('username', $username)->count();
 
-                if ($check_traffic < 1) {
+                    if ($check_traffic < 1) {
 
-                    Traffic::create([
-                        'username' => $username,
-                        'download' => $lastdownload,
-                        'upload' => $lastupload,
-                        'total' => $lasttotal
-                    ]);
+                        Traffic::create([
+                            'username' => $username,
+                            'download' => $lastdownload,
+                            'upload' => $lastupload,
+                            'total' => $lasttotal
+                        ]);
 
-                } else {
-                    Traffic::where('username', $username)
-                        ->update(['download' => $lastdownload, 'upload' => $lastupload, 'total' => $lasttotal]);
+                    } else {
+                        Traffic::where('username', $username)
+                            ->update(['download' => $lastdownload, 'upload' => $lastupload, 'total' => $lasttotal]);
+                    }
                 }
             }
         }
