@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d50d8e18-a0fd-450a-835d-0b5aea5e7d6b" name="Changes" comment="Fix Version 3.7.2 Laravel Package">
-      <change beforePath="$PROJECT_DIR$/Web Panel/app/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web Panel/app/resources/views/layouts/footer.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/app/resources/views/layouts/footer.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web Panel/cp/assets/js/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/Web Panel/cp/assets/js/config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,6 +15,13 @@
   </component>
   <component name="ComposerSettings">
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
@@ -122,6 +133,7 @@
       <workItem from="1689752035282" duration="25405000" />
       <workItem from="1689881962816" duration="8088000" />
       <workItem from="1690042608127" duration="8271000" />
+      <workItem from="1690128877539" duration="3114000" />
     </task>
     <task id="LOCAL-00067" summary="Fix Version 3.4">
       <created>1687726978805</created>

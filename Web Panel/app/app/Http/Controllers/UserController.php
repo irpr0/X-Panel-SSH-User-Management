@@ -220,6 +220,9 @@ class UserController extends Controller
             if ($check_user > 0) {
                 Users::where('username', $username)->update(['status' => 'deactive']);
                 Process::run("sudo killall -u {$username}");
+                Process::run("sudo pkill -u {$username}");
+                Process::run("sudo timeout 10 pkill -u {$username}");
+                Process::run("sudo timeout 10 killall -u {$username}");
                 Process::run("sudo userdel -r {$username}");
             }
         }
@@ -228,6 +231,9 @@ class UserController extends Controller
             if ($check_user > 0) {
                 Users::where('username', $username)->update(['status' => 'deactive']);
                 Process::run("sudo killall -u {$username}");
+                Process::run("sudo pkill -u {$username}");
+                Process::run("sudo timeout 10 pkill -u {$username}");
+                Process::run("sudo timeout 10 killall -u {$username}");
                 Process::run("sudo userdel -r {$username}");
             }
         }
@@ -268,6 +274,9 @@ class UserController extends Controller
             if ($check_user > 0) {
 
                 Process::run("sudo killall -u {$username}");
+                Process::run("sudo pkill -u {$username}");
+                Process::run("sudo timeout 10 pkill -u {$username}");
+                Process::run("sudo timeout 10 killall -u {$username}");
                 $userdelProcess =Process::run("sudo userdel -r {$username}");
                 if ($userdelProcess->successful()) {
                     Users::where('username', $username)->delete();
@@ -279,6 +288,9 @@ class UserController extends Controller
             $check_user = Users::where('username', $username)->where('customer_user', $user->username)->count();
             if ($check_user > 0) {
                 Process::run("sudo killall -u {$username}");
+                Process::run("sudo pkill -u {$username}");
+                Process::run("sudo timeout 10 pkill -u {$username}");
+                Process::run("sudo timeout 10 killall -u {$username}");
                 $userdelProcess =Process::run("sudo userdel -r {$username}");
                 if ($userdelProcess->successful()) {
                     Users::where('username', $username)->delete();
@@ -297,6 +309,9 @@ class UserController extends Controller
                 $check_user = Users::where('username',$username)->count();
                 if ($check_user > 0) {
                     Process::run("sudo killall -u {$username}");
+                    Process::run("sudo pkill -u {$username}");
+                    Process::run("sudo timeout 10 pkill -u {$username}");
+                    Process::run("sudo timeout 10 killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
                         Users::where('username', $username)->delete();
@@ -309,6 +324,9 @@ class UserController extends Controller
                 $check_user = Users::where('username', $username)->where('customer_user', $user->username)->count();
                 if ($check_user > 0) {
                     Process::run("sudo killall -u {$username}");
+                    Process::run("sudo pkill -u {$username}");
+                    Process::run("sudo timeout 10 pkill -u {$username}");
+                    Process::run("sudo timeout 10 killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
                         Users::where('username', $username)->delete();
@@ -442,6 +460,9 @@ class UserController extends Controller
                     Process::input($request->password."\n".$request->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
                 } else {
                     Process::run("sudo killall -u {$request->username}");
+                    Process::run("sudo pkill -u {$request->username}");
+                    Process::run("sudo timeout 10 pkill -u {$request->username}");
+                    Process::run("sudo timeout 10 killall -u {$request->username}");
                     Process::run("sudo userdel -r {$request->username}");
                 }
                 if ($user->password != $request->password) {

@@ -89,7 +89,6 @@ class ApiController extends Controller
         if (Users::where('username', $request->username)->exists()) {
             return response()->json(['message' => 'User Exist']);
         } else {
-            DB::beginTransaction();
             Users::create([
                 'username' => $request->username,
                 'password' => $request->password,
@@ -115,7 +114,6 @@ class ApiController extends Controller
             Process::run("sudo adduser --disabled-password --gecos '' --shell /usr/sbin/nologin {$request->username}");
             Process::run("echo '{$request->username}:{$request->password}' | sudo chpasswd");
             return response()->json(['message' => 'User Created']);
-            DB::commit();
         }
 
     }
@@ -130,6 +128,9 @@ class ApiController extends Controller
         $check_user = Users::where('username', $request->username)->count();
         if ($check_user > 0) {
             Process::run("sudo killall -u {$request->username}");
+            Process::run("sudo pkill -u {$request->username}");
+            Process::run("sudo timeout 10 pkill -u {$request->username}");
+            Process::run("sudo timeout 10 killall -u {$request->username}");
             Process::run("sudo userdel -r {$request->username}");
             Users::where('username', $request->username)->delete();
             Traffic::where('username', $request->username)->delete();
@@ -206,6 +207,9 @@ class ApiController extends Controller
                 Process::run("echo '{$request->username}:{$request->password}' | sudo chpasswd");
             } else {
                 Process::run("sudo killall -u {$request->username}");
+                Process::run("sudo pkill -u {$request->username}");
+                Process::run("sudo timeout 10 pkill -u {$request->username}");
+                Process::run("sudo timeout 10 killall -u {$request->username}");
                 Process::run("sudo userdel -r {$request->username}");
             }
             if($user->password!=$request->password)
@@ -250,6 +254,9 @@ class ApiController extends Controller
         if ($check_user > 0) {
             Users::where('username', $request->username)->update(['status' => 'deactive']);
             Process::run("sudo killall -u {$request->username}");
+            Process::run("sudo pkill -u {$request->username}");
+            Process::run("sudo timeout 10 pkill -u {$request->username}");
+            Process::run("sudo timeout 10 killall -u {$request->username}");
             Process::run("sudo userdel -r {$request->username}");
             return response()->json(['message' => 'User Deactivated']);
         }
