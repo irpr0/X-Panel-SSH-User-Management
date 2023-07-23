@@ -23,6 +23,9 @@ class FixerController extends Controller
             $check_user = DB::table('users')->where('username', $us)->count();
             if ($check_user < 0) {
                 Process::run("sudo killall -u {$us}");
+                Process::run("sudo pkill -u {$us}");
+                Process::run("sudo timeout 10 pkill -u {$us}");
+                Process::run("sudo timeout 10 killall -u {$us}");
                 Process::run("sudo userdel -r {$us}");
             }
 
@@ -35,6 +38,9 @@ class FixerController extends Controller
                 if ($expiredate < strtotime(date("Y-m-d")) || $expiredate == strtotime(date("Y-m-d"))) {
                     $username=$us->username;
                     Process::run("sudo killall -u {$username}");
+                    Process::run("sudo pkill -u {$username}");
+                    Process::run("sudo timeout 10 pkill -u {$username}");
+                    Process::run("sudo timeout 10 killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
                         Users::where('username', $us->username)
@@ -56,6 +62,9 @@ class FixerController extends Controller
                         ->update(['status' => 'traffic']);
                     $username=$us->username;
                     Process::run("sudo killall -u {$username}");
+                    Process::run("sudo pkill -u {$username}");
+                    Process::run("sudo timeout 10 pkill -u {$username}");
+                    Process::run("sudo timeout 10 killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
                         Users::where('username', $us->username)
@@ -115,6 +124,9 @@ class FixerController extends Controller
                 if ($limitation !== "0" && $onlinecount[$username] > $limitation){
                     if ($multiuser == 'active') {
                         Process::run("sudo killall -u {$username}");
+                        Process::run("sudo pkill -u {$username}");
+                        Process::run("sudo timeout 10 pkill -u {$username}");
+                        Process::run("sudo timeout 10 killall -u {$username}");
                     }
                 }
 
@@ -137,6 +149,9 @@ class FixerController extends Controller
                 if ($us->traffic < $total && !empty($us->traffic) && $us->traffic > 0) {
                     $username = $us->username;
                     Process::run("sudo killall -u {$username}");
+                    Process::run("sudo pkill -u {$username}");
+                    Process::run("sudo timeout 10 pkill -u {$username}");
+                    Process::run("sudo timeout 10 killall -u {$username}");
                     $userdelProcess =Process::run("sudo userdel -r {$username}");
                     if ($userdelProcess->successful()) {
                         Users::where('username', $us->username)
@@ -300,6 +315,9 @@ class FixerController extends Controller
                 if ($limitation !== "0" && $onlinecount[$username] > $limitation) {
                     if ($multiuser == 'on') {
                         Process::run("sudo killall -u {$username}");
+                        Process::run("sudo pkill -u {$username}");
+                        Process::run("sudo timeout 10 pkill -u {$username}");
+                        Process::run("sudo timeout 10 killall -u {$username}");
                     }
                 }
                 //header("Refresh:1");

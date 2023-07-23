@@ -491,6 +491,9 @@ class UserController extends Controller
                     Process::input($request->password."\n".$request->password."\n")->timeout(120)->run("sudo passwd {$request->username}");
                 } else {
                     Process::run("sudo killall -u {$request->username}");
+                    Process::run("sudo pkill -u {$request->username}");
+                    Process::run("sudo timeout 10 pkill -u {$request->username}");
+                    Process::run("sudo timeout 10 killall -u {$request->username}");
                     Process::run("sudo userdel -r {$request->username}");
                 }
                 if ($user->password != $request->password) {
